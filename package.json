@@ -1,0 +1,29 @@
+{
+    "name": "@nuc-lib/deep-key",
+    "author": "Esaúl Franco",
+    "description": "Utility to work with deep keys in objects.",
+    "license": "MIT",
+    "type": "module",
+    "version": "0.0.1",
+    "keywords": [
+        "typescript",
+        "utility"
+    ],
+    "exports": {
+        ".": {
+            "import": "./lib/index.ts"
+        },
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "lib"
+    ],
+    "devDependencies": {
+        "@eslint/js": "^9.26.0",
+        "@types/bun": "latest",
+        "typescript-eslint": "^8.32.0"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    }
+}
