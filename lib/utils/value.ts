@@ -11,17 +11,32 @@ export const getKeyValue = <T extends TObject>(
     object: T,
     key: KeyOf<T>
 ): any => {
-    const subKeys = (key as string).split('.');
+    const subKeys = (key as string)
+        .split('.')
+        .map((key) => key.replace(/[[\]]/g, ''));
     // Initialize the value with the object
     let value: any = object;
 
+    // If the object is an array, return undefined
+    // This is to prevent the function from returning an array empty objects
+    if (Array.isArray(object)) {
+        return undefined;
+    }
+
     // Iterate over the subKeys to get the nested value
     subKeys.forEach((key) => {
-        value = Array.isArray(value)
-            ? value.map((item) => item?.[key])
-            : value?.[key];
+        if (!Array.isArray(value)) {
+            value = value?.[key];
+            return;
+        }
+        // If the key is a number, get the value at that index
+        if (Number.isSafeInteger(Number(key))) {
+            value = value?.[Number(key)];
+            return;
+        }
+        value = value.map((item) => item?.[key]);
     });
 
-    // Return the deepest value for the desired key
+    // Return the value for the desired key
     return value;
 };
