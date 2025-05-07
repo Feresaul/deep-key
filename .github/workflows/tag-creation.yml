@@ -1,0 +1,38 @@
+name: 'Create New Tag'
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    create-new-tag:
+        runs-on: ubuntu-24.04
+        timeout-minutes: 5
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Git Config
+              run: |
+                  git config --global user.name "${{ vars.USERNAME }}"
+                  git config --global user.email "${{ vars.EMAIL }}"
+
+            - name: Create New Branch
+              run: |
+                  git pull
+                  git checkout -b newTag
+
+            - name: App Version
+              run: npm version patch
+
+            - name: Commit Changes
+              run: |
+                  git show
+                  git push origin newTag
+                  git push --tags
+
+            - name: Create Pull Request
+              run: |
+                  gh pr create -B main -H newTag --title 'Tag Creation' --body "New tag created"
+                  gh pr merge newTag --squash --delete-branch --admin
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
