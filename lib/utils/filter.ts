@@ -18,7 +18,7 @@ export const filterArrayByKeyValue = <T extends TObject>(
     return list.filter((item) => {
         if (Array.isArray(value)) {
             if (value.length === 0) {
-                return true;
+                return false;
             }
             return value.some((val) => val === getKeyValue(item, key));
         }
