@@ -23,7 +23,7 @@ describe('getKeyValue', () => {
             guy.personalInfo.name
         );
         expect(getKeyValue(guy, 'personalInfo.age')).toBe(guy.personalInfo.age);
-        expect(getKeyValue(guy, 'personalInfo.name')).toBe(
+        expect(getKeyValue(guy, 'personalInfo.city')).toBe(
             guy.personalInfo.city
         );
 
