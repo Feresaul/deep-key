@@ -9,7 +9,7 @@ import type { DeepKeyOf, TObject } from '../types';
  * @param order the order to sort by. Available values are 'ASC' and 'DESC'.
  * @returns an array sorted by the given key and order.
  */
-export const sortByProp = <T extends TObject>(
+export const sortByKeyValue = <T extends TObject>(
     array: T[],
     key: DeepKeyOf<T>,
     order: 'ASC' | 'DESC' = 'ASC'
