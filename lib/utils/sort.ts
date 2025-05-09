@@ -3,11 +3,11 @@ import { getKeyValue } from './value';
 import type { DeepKeyOf, TObject } from '../types';
 
 /**
- * This function sorts an array of objects by a given key and order.
- * @param array the array to sort.
- * @param key the key to sort by.
- * @param order the order to sort by. Available values are 'ASC' and 'DESC'.
- * @returns an array sorted by the given key and order.
+ * Sorts an array of objects by a specified key value.
+ * @param array The array to sort.
+ * @param key The key to sort by.
+ * @param order The order to sort by. Can be 'ASC' or 'DESC'. Default is 'ASC'.
+ * @returns The sorted array.
  */
 export const sortByKeyValue = <T extends TObject>(
     array: T[],
@@ -15,7 +15,7 @@ export const sortByKeyValue = <T extends TObject>(
     order: 'ASC' | 'DESC' = 'ASC'
 ) => {
     const sortedArray = array.sort((a, b) => {
-        return String(getKeyValue(a, key)).toLowerCase() >
+        return String(getKeyValue(a, key)).toLowerCase() >=
             String(getKeyValue(b, key)).toLowerCase()
             ? 1
             : -1;

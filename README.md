@@ -7,6 +7,12 @@ A utility library designed to simplify working with deeply nested objects in Typ
 -   Sort arrays based on nested properties.
 -   Lightweight and easy to integrate.
 
+## Installation
+
+```bash
+npm install @nuc-lib/deep-key
+```
+
 ## Usage
 
 ### Accessing Nested Properties
@@ -141,4 +147,34 @@ filterByKeyValue(people, 'age', (value) => value > 25);
 //   { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } },
 //   { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } }
 // ]
+```
+
+### Sorting By Nested Properties
+
+The `sortByKeyValue` utility allows you to sort an array of objects based on a nested property. It returns a new array sorted in ascending order by default.
+
+```javascript
+import { sortByKeyValue } from '@nuc-lib/deep-key';
+
+sortByKeyValue(people, 'name');
+// [
+//     { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
+//     { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } },
+//     { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } },
+//     { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } }
+// ])
+sortByKeyValue(people, 'address.city');
+// [
+//     { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
+//     { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
+//     { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } },
+//     { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } }
+// ])
+sortByKeyValue(people, 'address.zip');
+// [
+//     { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
+//     { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
+//     { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } },
+//     { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } }
+// ])
 ```
