@@ -49,6 +49,10 @@ export const filterByKeyValue = <T extends TObject>(
                 return filter.some((val) => itemKeyValue.includes(val));
             }
 
+            if (strict) {
+                return filter.every((val) => val === itemKeyValue);
+            }
+            // If strict is false, check if any of the filter values are in the itemKeyValue
             return filter.some((val) => val === itemKeyValue);
         }
         // If key value is an array check if filter is in the array
