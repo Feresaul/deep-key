@@ -6,10 +6,8 @@
     "license": "MIT",
     "type": "module",
     "scripts": {
-        "build": "rimraf dist && tsc --project tsconfig.json",
         "lint": "eslint . --ext .ts",
-        "test": "vitest",
-        "prepublishOnly": "npm run build"
+        "test": "vitest"
     },
     "keywords": [
         "typescript",
@@ -27,8 +25,7 @@
     "homepage": "https://github.com/Feresaul/deep-key#readme",
     "exports": {
         ".": {
-            "default": "./lib/index.ts",
-            "types": "./lib/types.ts"
+            "import": "./lib/index.ts"
         },
         "./package.json": "./package.json"
     },
