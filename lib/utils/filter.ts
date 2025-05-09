@@ -22,6 +22,10 @@ export const filterByKeyValue = <T extends TObject>(
     filter: ((value: FilterValue) => boolean) | FilterValue,
     strict = true
 ) => {
+    if (!Array.isArray(list)) {
+        console.error('The first argument must be an array.');
+        return [];
+    }
     return list.filter((item) => {
         const itemKeyValue = getKeyValue(item, key);
         // Early return if itemKeyValue is undefined or an object
@@ -49,6 +53,10 @@ export const filterByKeyValue = <T extends TObject>(
                 return filter.some((val) => itemKeyValue.includes(val));
             }
 
+            if (strict) {
+                return filter.every((val) => val === itemKeyValue);
+            }
+            // If strict is false, check if any of the filter values are in the itemKeyValue
             return filter.some((val) => val === itemKeyValue);
         }
         // If key value is an array check if filter is in the array

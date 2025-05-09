@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { getKeyValue } from '@nuc-lib/deep-key';
+import { getKeyValue } from '../lib/utils/value';
 
 const guy = {
     id: 2,
