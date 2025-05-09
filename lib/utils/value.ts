@@ -2,10 +2,10 @@
 import type { KeyOf, TObject } from '../types';
 
 /**
- * This function gets the value of a key from an object
- * @param object the object to get the key value from
- * @param key a composed key to get the nested value
- * @returns the value of the key for the object
+ * Gets the value of a key in an object, including nested keys.
+ * @param object The object to get the value from.
+ * @param key The key to get the value for. Can be a nested key (e.g. 'key1.key2.key3').
+ * @returns The value of the key in the object.
  */
 export const getKeyValue = <T extends TObject>(
     object: T,
