@@ -1,4 +1,4 @@
-A utility library designed to simplify working with deeply nested objects in JavaScript. This is intended to be used when you work with dynamic keys or when you are not sure if the property exists. It provides a set of functions so you don't have to deal with the complexity of checking for the existence of properties at each level of the object.
+A utility library designed to simplify working with deeply nested objects in TypeScript. This is intended to be used when you work with dynamic keys or when you are not sure if the property exists. It provides a set of functions so you don't have to deal with the complexity of checking for the existence of properties at each level of the object.
 
 ## Features
 

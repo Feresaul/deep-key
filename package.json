@@ -27,13 +27,13 @@
     "homepage": "https://github.com/Feresaul/deep-key#readme",
     "exports": {
         ".": {
-            "default": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "default": "./lib/index.ts",
+            "types": "./lib/types.ts"
         },
         "./package.json": "./package.json"
     },
     "files": [
-        "dist"
+        "lib"
     ],
     "devDependencies": {
         "@eslint/js": "^9.26.0",

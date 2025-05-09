@@ -22,9 +22,6 @@ export const filterByKeyValue = <T extends TObject>(
     filter: ((value: FilterValue) => boolean) | FilterValue,
     strict = true
 ) => {
-    if (!Array.isArray(list)) {
-        throw new Error('The first argument must be an array.');
-    }
     return list.filter((item) => {
         const itemKeyValue = getKeyValue(item, key);
         // Early return if itemKeyValue is undefined or an object
