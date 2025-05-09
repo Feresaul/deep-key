@@ -11,9 +11,9 @@ type FilterValue = string | number | boolean | string[] | number[];
  * @param key The key to filter by.
  * @param filter The value to filter by. This can be a single value or an array of values.
  * It also supports a function that takes the value of the key and returns a boolean.
- * @param mode The mode of filtering. 'strict' checks for exact matches, while 'loose' allows for partial matches.
- * Only applies to array filter values.
- * This is ignored if custom filter function is provided.
+ * @param strict When set to true (default), checks for exact matches between arrays.
+ * This only applies if both the `filter` and the key's value are arrays.
+ * Ignored if a custom filter function is provided or if `filter` is not an array.
  * @returns A new array of objects that match the specified key-value pair.
  */
 export const filterByKeyValue = <T extends TObject>(
