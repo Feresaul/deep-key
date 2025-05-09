@@ -23,8 +23,7 @@ export const filterByKeyValue = <T extends TObject>(
     strict = true
 ) => {
     if (!Array.isArray(list)) {
-        console.error('The first argument must be an array.');
-        return [];
+        throw new Error('The first argument must be an array.');
     }
     return list.filter((item) => {
         const itemKeyValue = getKeyValue(item, key);
