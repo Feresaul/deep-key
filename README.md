@@ -1,8 +1,4 @@
-# @nuc-lib/deep-key
-
-## Description
-
-`@nuc-lib/deep-key` is a utility library designed to simplify working with deeply nested objects in JavaScript. This is intended to be used when you work with dynamic keys or when you are not sure if the property exists. It provides a set of functions so you don't have to deal with the complexity of checking for the existence of properties at each level of the object.
+A utility library designed to simplify working with deeply nested objects in TypeScript. This is intended to be used when you work with dynamic keys or when you are not sure if the property exists. It provides a set of functions so you don't have to deal with the complexity of checking for the existence of properties at each level of the object.
 
 ## Features
 
@@ -24,7 +20,11 @@ import { getKeyValue } from '@nuc-lib/deep-key';
 
 const guy = {
     id: 2,
-    personalInfo: { name: 'John Doe', age: 12, city: 'New York' },
+    personalInfo: {
+        name: 'John Doe',
+        age: 12,
+        city: 'New York'
+    },
     contacts: [
         { name: 'Jane Doe', email: 'afk@example.com' },
         { name: 'Alice Smith', email: 'alice@example.com' },
@@ -42,7 +42,7 @@ getKeyValue(guy, 'personalInfo.active'); // undefined -> no error thrown
 
 For arrays there are two ways to access the values:
 
--   Getting an element in a specific index.
+-   **Getting an element in a specific index.**
 
 ```javascript
 getKeyValue(guy, 'contacts.0');
@@ -51,7 +51,8 @@ getKeyValue(guy, 'contacts.0.name'); // 'Jane Doe'
 getKeyValue(guy, 'contacts.0.email'); // 'afk@example.com'
 ```
 
--   Getting all the values in the array. A key wrapped in `[]` represents an actual mapping over the array, this means it will return an array of values from the parent array.
+-   **Getting all the values in the array.**
+    A key wrapped in `[]` represents an actual mapping over the array, this means it will return an array of values from the parent array.
 
 > **Note:** There is no need to use the `[]` notation if you are not using TypeScript. The utility will still map over the array and return the values. This is just a visual aid to show that the key is an array to be mapped.
 
@@ -118,10 +119,7 @@ Strict mode for filter arrays is also supported. This means that the filter will
 
 ```javascript
 filterByKeyValue(people, 'age', [22, 25]);
-// [
-//   { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
-//   { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
-// ]
+// []
 ```
 
 You can do a **loose filter** by passing `false` as the fourth argument.
