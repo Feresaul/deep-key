@@ -11,7 +11,7 @@ type FilterValue = string | number | boolean | string[] | number[];
  * @param key The key to filter by.
  * @param filter The value to filter by. This can be a single value or an array of values.
  * It also supports a function that takes the value of the key and returns a boolean.
- * @param mode The mode of filtering. 'strict' checks for exact matches, while 'loose' allows for partial matches.
+ * @param strict This checks for exact matches when set to true.
  * Only applies to array filter values.
  * This is ignored if custom filter function is provided.
  * @returns A new array of objects that match the specified key-value pair.
