@@ -1,6 +1,6 @@
 {
     "name": "@nuc-lib/deep-key",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Utility to work with deep keys in objects.",
     "author": "Esaúl Franco",
     "license": "MIT",
