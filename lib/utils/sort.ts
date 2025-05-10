@@ -14,7 +14,7 @@ export const sortByKeyValue = <T extends TObject>(
     key: DeepKeyOf<T>,
     order: 'ASC' | 'DESC' = 'ASC'
 ) => {
-    const sortedArray = array.sort((a, b) => {
+    const sortedArray = array.slice().sort((a, b) => {
         return String(getKeyValue(a, key)).toLowerCase() >=
             String(getKeyValue(b, key)).toLowerCase()
             ? 1
