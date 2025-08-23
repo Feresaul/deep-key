@@ -40,10 +40,10 @@ const guy = {
     associatedIds: [23, 43, 67, 89]
 };
 
-getKeyValue(guy, 'personalInfo.name'); // 'John Doe'
-getKeyValue(guy, 'personalInfo.age'); // 12
-getKeyValue(guy, 'personalInfo.city'); // 'New York'
-getKeyValue(guy, 'personalInfo.active'); // undefined -> no error thrown
+getKeyValue({ object: guy, key: 'personalInfo.name' }); // 'John Doe'
+getKeyValue({ object: guy, key: 'personalInfo.age' }); // 12
+getKeyValue({ object: guy, key: 'personalInfo.city' }); // 'New York'
+getKeyValue({ object: guy, key: 'personalInfo.active' }); // undefined -> no error thrown
 ```
 
 For arrays there are two ways to access the values:
@@ -51,10 +51,10 @@ For arrays there are two ways to access the values:
 - **Getting an element in a specific index.**
 
 ```javascript
-getKeyValue(guy, 'contacts.0');
+getKeyValue({ object: guy, key: 'contacts.0' });
 // { name: 'Jane Doe', email: 'afk@example.com' }
-getKeyValue(guy, 'contacts.0.name'); // 'Jane Doe'
-getKeyValue(guy, 'contacts.0.email'); // 'afk@example.com'
+getKeyValue({ object: guy, key: 'contacts.0.name' }); // 'Jane Doe'
+getKeyValue({ object: guy, key: 'contacts.0.email' }); // 'afk@example.com'
 ```
 
 - **Getting all the values in the array.**
@@ -63,11 +63,11 @@ getKeyValue(guy, 'contacts.0.email'); // 'afk@example.com'
 > **Note:** There is no need to use the `[]` notation if you are not using TypeScript. The utility will still map over the array and return the values. This is just a visual aid to show that the key is an array to be mapped.
 
 ```javascript
-getKeyValue(guy, '[contacts].name');
+getKeyValue({ object: guy, key: '[contacts].name' });
 // ['Jane Doe', 'Alice Smith', 'Bob Johnson', 'Charlie Brown']
-getKeyValue(guy, 'contacts.name');
+getKeyValue({ object: guy, key: 'contacts.name' });
 // ['Jane Doe', 'Alice Smith', 'Bob Johnson', 'Charlie Brown'] -> Works the same as above
-getKeyValue(guy, '[contacts].invalidKey');
+getKeyValue({ object: guy, key: '[contacts].invalidKey' });
 // [undefined, undefined, undefined, undefined] -> no error thrown
 ```
 
@@ -109,43 +109,45 @@ const people = [
     }
 ];
 
-filterByKeyValue(people, 'age', 25);
+filterByKeyValue({
+    array: people,
+    key: 'age',
+    filter: (value) => value === 25
+});
 // [ { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } } ]
 
-filterByKeyValue(people, 'address.city', 'Houston');
+filterByKeyValue({
+    array: people,
+    key: 'address.city',
+    filter: (value) => value === 'Houston'
+});
 // [
 //   { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
 //   { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } }
 // ]
-filterByKeyValue(people, 'address', 'Houston');
+filterByKeyValue({
+    array: people,
+    key: 'address',
+    filter: (value) => value === 'Houston'
+});
 // [] -> no error thrown
-```
-
-Strict mode for filter arrays is also supported. This means that the filter will only return the objects that match the exact value of the key.
-
-```javascript
-filterByKeyValue(people, 'age', [22, 25]);
-// []
-```
-
-You can do a **loose filter** by passing `false` as the fourth argument.
-This means that the filter will return the objects that match any of the values in the array.
-
-```javascript
-filterByKeyValue(people, 'age', [22, 25], false);
-// [
-//   { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
-//   { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
-// ]
-```
-
-Use a custom filter function by passing a function as the third argument.
-
-```javascript
-filterByKeyValue(people, 'age', (value) => value > 25);
+filterByKeyValue({
+    array: people,
+    key: 'age',
+    filter: (value) => value > 25
+});
 // [
 //   { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } },
 //   { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } }
+// ]
+filterByKeyValue({
+    array: people,
+    key: 'age',
+    filter: (value) => [22, 25].includes(value)
+});
+// [
+//   { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
+//   { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
 // ]
 ```
 
@@ -156,25 +158,25 @@ The `sortByKeyValue` utility allows you to sort an array of objects based on a n
 ```javascript
 import { sortByKeyValue } from '@nuc-lib/deep-key';
 
-sortByKeyValue(people, 'name');
+sortByKeyValue({ array: people, key: 'name' });
 // [
 //     { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
 //     { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } },
 //     { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } },
 //     { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } }
-// ])
-sortByKeyValue(people, 'address.city');
+// ]
+sortByKeyValue({ array: people, key: 'address.city' });
 // [
 //     { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
 //     { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
 //     { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } },
 //     { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } }
-// ])
-sortByKeyValue(people, 'address.zip');
+// ]
+sortByKeyValue({ array: people, key: 'address.zip' });
 // [
 //     { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
 //     { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
 //     { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } },
 //     { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } }
-// ])
+// ]
 ```
