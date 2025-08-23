@@ -2,10 +2,10 @@ A utility library designed to simplify working with deeply nested objects in Typ
 
 ## Features
 
--   Safely access deeply nested properties.
--   Filter arrays based on nested properties.
--   Sort arrays based on nested properties.
--   Lightweight and easy to integrate.
+- Safely access deeply nested properties.
+- Filter arrays based on nested properties.
+- Sort arrays based on nested properties.
+- Lightweight and easy to integrate.
 
 ## Installation
 
@@ -48,7 +48,7 @@ getKeyValue(guy, 'personalInfo.active'); // undefined -> no error thrown
 
 For arrays there are two ways to access the values:
 
--   **Getting an element in a specific index.**
+- **Getting an element in a specific index.**
 
 ```javascript
 getKeyValue(guy, 'contacts.0');
@@ -57,8 +57,8 @@ getKeyValue(guy, 'contacts.0.name'); // 'Jane Doe'
 getKeyValue(guy, 'contacts.0.email'); // 'afk@example.com'
 ```
 
--   **Getting all the values in the array.**
-    A key wrapped in `[]` represents an actual mapping over the array, this means it will return an array of values from the parent array.
+- **Getting all the values in the array.**
+  A key wrapped in `[]` represents an actual mapping over the array, this means it will return an array of values from the parent array.
 
 > **Note:** There is no need to use the `[]` notation if you are not using TypeScript. The utility will still map over the array and return the values. This is just a visual aid to show that the key is an array to be mapped.
 

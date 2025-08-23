@@ -2,61 +2,30 @@ import { getKeyValue } from './value';
 
 import type { DeepKeyOf, TObject } from '../types';
 
-type FilterValue = string | number | boolean | string[] | number[];
+type FilterParams<T extends TObject> = {
+    array: T[];
+    key: DeepKeyOf<T>;
+    filter: (value: unknown) => boolean;
+};
 
 /**
  * This function filters an array of objects based on a specific key and value.
- * It returns a new array containing only the objects that match the given key-value pair.
- * @param list The array of objects to filter.
- * @param key The key to filter by.
- * @param filter The value to filter by. Supports custom filter functions.
- * @param strict Checks for exact matches between arrays if applicable.
- * @returns A new array of objects that match the specified key-value pair.
+ * It returns a new array containing only the objects that match the given key-value pair based on the specified filter criteria and options.
+ * @param params - The parameters for filtering, including the array of objects, the key to filter by, and the filter function.
+ * @returns A new array with the filtered objects.
  */
-export const filterByKeyValue = <T extends TObject>(
-    list: T[],
-    key: DeepKeyOf<T>,
-    filter: ((value: FilterValue) => boolean) | FilterValue,
-    strict = true
-) => {
-    return list.filter((item) => {
-        const itemKeyValue = getKeyValue(item, key);
-        // Early return if itemKeyValue is undefined or an object
+export const filterByKeyValue = <T extends TObject>({
+    array,
+    filter,
+    key
+}: FilterParams<T>) => {
+    return array.filter((item) => {
+        const itemKeyValue = getKeyValue({ object: item, key });
+
+        // Early return if itemKeyValue is undefined
         if (!itemKeyValue) {
             return false;
         }
-        // Verify if filter is a function and call it with itemKeyValue
-        if (typeof filter === 'function') {
-            try {
-                return filter(itemKeyValue);
-            } catch {
-                return false;
-            }
-        }
-        // If filter is an array, check if itemKeyValue is in the array
-        if (Array.isArray(filter)) {
-            if (filter.length === 0) {
-                return false;
-            }
-
-            if (Array.isArray(itemKeyValue)) {
-                if (strict) {
-                    return filter.every((val) => itemKeyValue.includes(val));
-                }
-                return filter.some((val) => itemKeyValue.includes(val));
-            }
-
-            if (strict) {
-                return filter.every((val) => val === itemKeyValue);
-            }
-            // If strict is false, check if any of the filter values are in the itemKeyValue
-            return filter.some((val) => val === itemKeyValue);
-        }
-        // If key value is an array check if filter is in the array
-        if (Array.isArray(itemKeyValue)) {
-            return itemKeyValue.some((val) => val === filter);
-        }
-
-        return itemKeyValue === filter;
+        return filter(itemKeyValue);
     });
 };
