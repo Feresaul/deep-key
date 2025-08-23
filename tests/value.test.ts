@@ -16,39 +16,43 @@ const guy = {
 
 describe('getKeyValue', () => {
     it('should return the value of a key in an object', () => {
-        expect(getKeyValue(guy, 'id')).toBe(guy.id);
+        expect(getKeyValue({ object: guy, key: 'id' })).toBe(guy.id);
 
-        expect(getKeyValue(guy, 'personalInfo')).toBe(guy.personalInfo);
-        expect(getKeyValue(guy, 'personalInfo.name')).toBe(
+        expect(getKeyValue({ object: guy, key: 'personalInfo' })).toBe(
+            guy.personalInfo
+        );
+        expect(getKeyValue({ object: guy, key: 'personalInfo.name' })).toBe(
             guy.personalInfo.name
         );
-        expect(getKeyValue(guy, 'personalInfo.age')).toBe(guy.personalInfo.age);
-        expect(getKeyValue(guy, 'personalInfo.city')).toBe(
+        expect(getKeyValue({ object: guy, key: 'personalInfo.age' })).toBe(
+            guy.personalInfo.age
+        );
+        expect(getKeyValue({ object: guy, key: 'personalInfo.city' })).toBe(
             guy.personalInfo.city
         );
 
         guy.contacts.forEach((contact, index) => {
-            expect(getKeyValue(guy, `contacts.${index}.name`)).toBe(
-                contact.name
-            );
-            expect(getKeyValue(guy, `contacts.${index}.email`)).toBe(
-                contact.email
-            );
+            expect(
+                getKeyValue({ object: guy, key: `contacts.${index}.name` })
+            ).toBe(contact.name);
+            expect(
+                getKeyValue({ object: guy, key: `contacts.${index}.email` })
+            ).toBe(contact.email);
         });
 
-        expect(getKeyValue(guy, 'associatedIds.2')).toBe(
+        expect(getKeyValue({ object: guy, key: 'associatedIds.2' })).toEqual(
             guy.associatedIds.at(2)
         );
     });
 
     it('should return the value of a key in an object - mapped keys', () => {
-        expect(getKeyValue(guy, '[contacts].name')).toEqual([
+        expect(getKeyValue({ object: guy, key: '[contacts].name' })).toEqual([
             'Jane Doe',
             'Alice Smith',
             'Bob Johnson',
             'Charlie Brown'
         ]);
-        expect(getKeyValue(guy, '[contacts].email')).toEqual([
+        expect(getKeyValue({ object: guy, key: '[contacts].email' })).toEqual([
             'afk@example.com',
             'alice@example.com',
             'bob@example.com',

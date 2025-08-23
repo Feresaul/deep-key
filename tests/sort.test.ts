@@ -35,7 +35,7 @@ const people = [
 
 describe('sortByKeyValue', () => {
     it('should sort by key value', () => {
-        expect(sortByKeyValue(people, 'name')).toEqual([
+        expect(sortByKeyValue({ array: people, key: 'name' })).toEqual([
             {
                 id: 3,
                 name: 'Alice Smith',
@@ -66,7 +66,7 @@ describe('sortByKeyValue', () => {
             }
         ]);
 
-        expect(sortByKeyValue(people, 'age')).toEqual([
+        expect(sortByKeyValue({ array: people, key: 'age' })).toEqual([
             {
                 id: 3,
                 name: 'Alice Smith',
@@ -97,7 +97,7 @@ describe('sortByKeyValue', () => {
             }
         ]);
 
-        expect(sortByKeyValue(people, 'address.city')).toEqual([
+        expect(sortByKeyValue({ array: people, key: 'address.city' })).toEqual([
             {
                 id: 3,
                 name: 'Alice Smith',
@@ -128,7 +128,7 @@ describe('sortByKeyValue', () => {
             }
         ]);
 
-        expect(sortByKeyValue(people, 'address.zip')).toEqual([
+        expect(sortByKeyValue({ array: people, key: 'address.zip' })).toEqual([
             {
                 id: 1,
                 name: 'John Doe',
@@ -159,7 +159,7 @@ describe('sortByKeyValue', () => {
             }
         ]);
 
-        expect(sortByKeyValue(people, 'parentIds')).toEqual([
+        expect(sortByKeyValue({ array: people, key: 'parentIds' })).toEqual([
             {
                 id: 1,
                 name: 'John Doe',

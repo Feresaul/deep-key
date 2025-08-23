@@ -1,17 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { KeyOf, TObject } from '../types';
 
+type Params<T extends TObject> = {
+    object: T;
+    key: KeyOf<T>;
+};
+
 /**
  * Gets the value of a key in an object, including nested keys.
- * @param object The object to get the value from.
- * @param key The key to get the value for. Can be a nested key (e.g. 'key1.key2.key3').
+ * @param params - The parameters for getting the key value, including the object and the key
+ * The key is represented as a string, with nested keys separated by dots (e.g. 'key1.key2.key3').
  * @returns The value of the key in the object.
  */
-export const getKeyValue = <T extends TObject>(
-    object: T,
-    key: KeyOf<T>
-): any => {
-    const subKeys = (key as string)
+export const getKeyValue = <T extends TObject>({
+    object,
+    key
+}: Params<T>): unknown => {
+    const subKeys = String(key)
         .split('.')
         .map((key) => key.replace(/[[\]]/g, ''));
     // Initialize the value with the object
@@ -34,7 +39,16 @@ export const getKeyValue = <T extends TObject>(
             value = value?.[Number(key)];
             return;
         }
-        value = value.map((item) => item?.[key]);
+
+        value = value.map((item) => {
+            const mapValue = (vItem: any): unknown => {
+                if (!Array.isArray(vItem)) {
+                    return vItem?.[key];
+                }
+                return vItem.map((subItem) => mapValue(subItem));
+            };
+            return mapValue(item);
+        });
     });
 
     // Return the value for the desired key
