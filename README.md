@@ -60,13 +60,9 @@ getKeyValue({ object: guy, key: 'contacts.0.email' }); // 'afk@example.com'
 - **Getting all the values in the array.**
   A key wrapped in `[]` represents an actual mapping over the array, this means it will return an array of values from the parent array.
 
-> **Note:** There is no need to use the `[]` notation if you are not using TypeScript. The utility will still map over the array and return the values. This is just a visual aid to show that the key is an array to be mapped.
-
 ```javascript
 getKeyValue({ object: guy, key: '[contacts].name' });
 // ['Jane Doe', 'Alice Smith', 'Bob Johnson', 'Charlie Brown']
-getKeyValue({ object: guy, key: 'contacts.name' });
-// ['Jane Doe', 'Alice Smith', 'Bob Johnson', 'Charlie Brown'] -> Works the same as above
 getKeyValue({ object: guy, key: '[contacts].invalidKey' });
 // [undefined, undefined, undefined, undefined] -> no error thrown
 ```
