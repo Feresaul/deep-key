@@ -31,9 +31,9 @@ export const sortByKeyValue = <T extends TObject>({
         if (typeof aValue === 'boolean' && typeof bValue === 'boolean') {
             return Number(aValue) - Number(bValue);
         }
-        return String(aValue).toLowerCase() <= String(bValue).toLowerCase()
-            ? -1
-            : 1;
+        return String(aValue).toLowerCase() >= String(bValue).toLowerCase()
+            ? 1
+            : -1;
     });
 
     return order === 'ASC' ? sortedArray : sortedArray.reverse();
