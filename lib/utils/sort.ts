@@ -18,11 +18,22 @@ export const sortByKeyValue = <T extends TObject>({
     key,
     order = 'ASC'
 }: SortParams<T>) => {
-    const sortedArray = array.slice().sort((a, b) => {
-        return String(getKeyValue({ object: a, key })).toLowerCase() >=
-            String(getKeyValue({ object: b, key })).toLowerCase()
-            ? 1
-            : -1;
+    const sortedArray = array.toSorted((a, b) => {
+        const aValue = getKeyValue({ object: a, key });
+        const bValue = getKeyValue({ object: b, key });
+
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+            return aValue - bValue;
+        }
+        if (aValue instanceof Date && bValue instanceof Date) {
+            return aValue.getTime() - bValue.getTime();
+        }
+        if (typeof aValue === 'boolean' && typeof bValue === 'boolean') {
+            return Number(aValue) - Number(bValue);
+        }
+        return String(aValue).toLowerCase() <= String(bValue).toLowerCase()
+            ? -1
+            : 1;
     });
 
     return order === 'ASC' ? sortedArray : sortedArray.reverse();
