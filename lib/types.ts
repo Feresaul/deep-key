@@ -40,3 +40,52 @@ export type DeepKeyOf<T extends TObject> = keyof {
               : `${K}.${DeepKeyOf<T[K]>}`
           : never]: unknown;
 };
+
+/**
+ * Represents the type of a value at a specific key in an object, including nested keys.
+ * This type is useful for creating dynamic forms or validating object structures.
+ */
+export type DeepTypeOfKey<T extends TObject, K extends string> =
+    // array.0.x
+    K extends `${infer Key}.${number}.${infer Rest}`
+        ? Key extends keyof T
+            ? T[Key] extends Array<infer U>
+                ? U extends TObject
+                    ? DeepTypeOfKey<U, Rest>
+                    : never
+                : never
+            : never
+        : // array.0
+          K extends `${infer Key}.${number}`
+          ? Key extends keyof T
+              ? T[Key] extends Array<infer U>
+                  ? U
+                  : never
+              : never
+          : // [array].x
+            K extends `[${infer Key}].${infer Rest}`
+            ? Key extends keyof T
+                ? T[Key] extends Array<infer U>
+                    ? U extends TObject
+                        ? DeepTypeOfKey<U, Rest>
+                        : never
+                    : never
+                : never
+            : // [array]
+              K extends `[${infer Key}]`
+              ? Key extends keyof T
+                  ? T[Key] extends Array<infer U>
+                      ? U
+                      : never
+                  : never
+              : // object.key
+                K extends `${infer Key}.${infer Rest}`
+                ? Key extends keyof T
+                    ? T[Key] extends TObject
+                        ? DeepTypeOfKey<T[Key], Rest>
+                        : never
+                    : never
+                : // direct key
+                  K extends keyof T
+                  ? T[K]
+                  : never;

@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { KeyOf, TObject } from '../types';
+import type { DeepTypeOfKey, KeyOf, TObject } from '../types';
 
-type Params<T extends TObject> = {
+type Params<T extends TObject, K extends KeyOf<T>> = {
     object: T;
-    key: KeyOf<T>;
+    key: K;
 };
 
 /**
  * Gets the value of a key in an object, including nested keys.
  * @param params - The parameters for getting the key value, including the object and the key
- * The key is represented as a string, with nested keys separated by dots (e.g. 'key1.key2.key3').
+ * The key is represented as a string, with nested keys separated by dots (e.g. `key1.key2.key3`).
  * @returns The value of the key in the object.
  */
-export const getKeyValue = <T extends TObject>({
+export const getKeyValue = <T extends TObject, K extends KeyOf<T>>({
     object,
     key
-}: Params<T>): unknown => {
+}: Params<T, K>): DeepTypeOfKey<T, K> | undefined => {
     const subKeys = String(key)
         .split('.')
         .map((key) => key.replace(/[[\]]/g, ''));
@@ -23,7 +23,7 @@ export const getKeyValue = <T extends TObject>({
     let value: any = object;
 
     // If the object is an array, return undefined
-    // This is to prevent the function from returning an array empty objects
+    // This is to prevent the function from returning an array of empty objects
     if (Array.isArray(object)) {
         return undefined;
     }

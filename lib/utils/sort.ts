@@ -17,7 +17,7 @@ export const sortByKeyValue = <T extends TObject>({
     array,
     key,
     order = 'ASC'
-}: SortParams<T>) => {
+}: SortParams<T>): T[] => {
     const sortedArray = array.toSorted((a, b) => {
         const aValue = getKeyValue({ object: a, key });
         const bValue = getKeyValue({ object: b, key });
