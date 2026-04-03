@@ -39,7 +39,7 @@ describe('filterByKeyValue', () => {
             filterByKeyValue({
                 array: people,
                 key: 'age',
-                filter: (value) => Number(value) >= 30
+                filter: (value) => (value ? value >= 30 : false)
             })
         ).toEqual([
             {
@@ -55,7 +55,7 @@ describe('filterByKeyValue', () => {
             filterByKeyValue({
                 array: people,
                 key: 'age',
-                filter: (value) => [21, 43].includes(Number(value))
+                filter: (value) => (value ? [21, 43].includes(value) : false)
             })
         ).toEqual([]);
 
@@ -63,7 +63,7 @@ describe('filterByKeyValue', () => {
             filterByKeyValue({
                 array: people,
                 key: 'age',
-                filter: (value) => Number(value) > 25
+                filter: (value) => (value ? value > 25 : false)
             })
         ).toEqual([
             {
@@ -129,12 +129,7 @@ describe('filterByKeyValue', () => {
             filterByKeyValue({
                 array: people,
                 key: 'parentIds',
-                filter: (value) => {
-                    if (Array.isArray(value)) {
-                        return value.includes(3);
-                    }
-                    return false;
-                }
+                filter: (value) => (value ? value.includes(3) : false)
             })
         ).toEqual([
             {

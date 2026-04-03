@@ -1,4 +1,6 @@
-A utility library designed to simplify working with deeply nested objects in TypeScript. This is intended to be used when you work with dynamic keys or when you are not sure if the property exists. It provides a set of functions so you don't have to deal with the complexity of checking for the existence of properties at each level of the object.
+A utility library designed to simplify working with deeply nested objects in TypeScript.
+This is intended to be used when you work with dynamic keys or when you are not sure if the property exists.
+It provides a set of functions so you don't have to deal with the complexity of checking for the existence of properties at each level of the object.
 
 ## Features
 
@@ -17,9 +19,11 @@ npm install @nuc-lib/deep-key
 
 ### Accessing Nested Properties
 
-The `getKeyValue` utility lets you access nested properties using a dot notation string. If the property does not exist, it returns `undefined` instead of throwing an error.
+The `getKeyValue` utility lets you access nested properties using a dot notation string.
+If the property does not exist, it returns `undefined` instead of throwing an error.
 
-The key is a string that represents the path to the property you want to access. The path is defined using dot notation, where each level of the object is separated by a dot.
+The key is a string that represents the path to the property you want to access.
+The path is defined using dot notation, where each level of the object is separated by a dot.
 
 ```javascript
 import { getKeyValue } from '@nuc-lib/deep-key';
@@ -43,7 +47,6 @@ const guy = {
 getKeyValue({ object: guy, key: 'personalInfo.name' }); // 'John Doe'
 getKeyValue({ object: guy, key: 'personalInfo.age' }); // 12
 getKeyValue({ object: guy, key: 'personalInfo.city' }); // 'New York'
-getKeyValue({ object: guy, key: 'personalInfo.active' }); // undefined -> no error thrown
 ```
 
 For arrays there are two ways to access the values:
@@ -51,8 +54,7 @@ For arrays there are two ways to access the values:
 - **Getting an element in a specific index.**
 
 ```javascript
-getKeyValue({ object: guy, key: 'contacts.0' });
-// { name: 'Jane Doe', email: 'afk@example.com' }
+getKeyValue({ object: guy, key: 'contacts.0' }); // { name: 'Jane Doe', email: 'afk@example.com' }
 getKeyValue({ object: guy, key: 'contacts.0.name' }); // 'Jane Doe'
 getKeyValue({ object: guy, key: 'contacts.0.email' }); // 'afk@example.com'
 ```
@@ -69,7 +71,8 @@ getKeyValue({ object: guy, key: '[contacts].invalidKey' });
 
 ### Filtering By Nested Properties
 
-The `filterByKeyValue` utility allows you to filter an array of objects based on a nested property. It returns a new array containing only the objects that match the specified key and value.
+The `filterByKeyValue` utility allows you to filter an array of objects based on a nested property.
+It returns a new array containing only the objects that match the specified key and value.
 
 ```javascript
 import { filterByKeyValue } from '@nuc-lib/deep-key';
@@ -111,7 +114,6 @@ filterByKeyValue({
     filter: (value) => value === 25
 });
 // [ { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } } ]
-
 filterByKeyValue({
     array: people,
     key: 'address.city',
@@ -121,12 +123,6 @@ filterByKeyValue({
 //   { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
 //   { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } }
 // ]
-filterByKeyValue({
-    array: people,
-    key: 'address',
-    filter: (value) => value === 'Houston'
-});
-// [] -> no error thrown
 filterByKeyValue({
     array: people,
     key: 'age',
@@ -149,7 +145,8 @@ filterByKeyValue({
 
 ### Sorting By Nested Properties
 
-The `sortByKeyValue` utility allows you to sort an array of objects based on a nested property. It returns a new array sorted in ascending order by default.
+The `sortByKeyValue` utility allows you to sort an array of objects based on a nested property.
+It returns a new array sorted in ascending order by default.
 
 ```javascript
 import { sortByKeyValue } from '@nuc-lib/deep-key';
