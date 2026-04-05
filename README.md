@@ -65,14 +65,12 @@ getKeyValue({ object: guy, key: 'contacts.0.email' }); // 'afk@example.com'
 ```javascript
 getKeyValue({ object: guy, key: '[contacts].name' });
 // ['Jane Doe', 'Alice Smith', 'Bob Johnson', 'Charlie Brown']
-getKeyValue({ object: guy, key: '[contacts].invalidKey' });
-// [undefined, undefined, undefined, undefined] -> no error thrown
 ```
 
 ### Filtering By Nested Properties
 
 The `filterByKeyValue` utility allows you to filter an array of objects based on a nested property.
-It returns a new array containing only the objects that match the specified key and value.
+It returns a new array containing only the objects that satisfy the filter condition.
 
 ```javascript
 import { filterByKeyValue } from '@nuc-lib/deep-key';
@@ -111,7 +109,7 @@ const people = [
 filterByKeyValue({
     array: people,
     key: 'age',
-    filter: (value) => value === 25
+    filter: (value) => (value ? value === 25 : false)
 });
 // [ { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } } ]
 filterByKeyValue({
@@ -126,7 +124,7 @@ filterByKeyValue({
 filterByKeyValue({
     array: people,
     key: 'age',
-    filter: (value) => value > 25
+    filter: (value) => (value ? value > 25 : false)
 });
 // [
 //   { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } },
