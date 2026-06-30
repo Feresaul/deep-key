@@ -1,8 +1,8 @@
 import { getKeyValue } from './value';
 
-import type { DeepKeyOf, DeepTypeOfKey, TObject } from '../types';
+import type { DeepTypeOfKey, KeyOf, TObject } from '../types';
 
-type FilterParams<T extends TObject, K extends DeepKeyOf<T>> = {
+type FilterParams<T extends TObject, K extends KeyOf<T>> = {
     array: T[];
     key: K;
     filter: (value: DeepTypeOfKey<T, K> | undefined) => boolean;
@@ -14,7 +14,7 @@ type FilterParams<T extends TObject, K extends DeepKeyOf<T>> = {
  * @param params - The parameters for filtering, including the array of objects, the key to filter by, and the filter function.
  * @returns A new array with the filtered objects.
  */
-export const filterByKeyValue = <T extends TObject, K extends DeepKeyOf<T>>({
+export const filterByKeyValue = <T extends TObject, K extends KeyOf<T>>({
     array,
     filter,
     key
