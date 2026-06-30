@@ -34,7 +34,7 @@ const people = [
 ];
 
 describe('filterByKeyValue', () => {
-    it('should filter array by filter value', () => {
+    it('should filter array', () => {
         expect(
             filterByKeyValue({
                 array: people,
@@ -83,7 +83,7 @@ describe('filterByKeyValue', () => {
         ]);
     });
 
-    it('should filter array by filter value - nested key', () => {
+    it('should filter array - nested key', () => {
         expect(
             filterByKeyValue({
                 array: people,
@@ -124,7 +124,26 @@ describe('filterByKeyValue', () => {
         ]);
     });
 
-    it('should filter array by filter value - array value', () => {
+    it('should filter array - object value', () => {
+        expect(
+            filterByKeyValue({
+                array: people,
+                key: 'address',
+                filter: (value) =>
+                    value?.city === 'Houston' && value?.zip === '10001'
+            })
+        ).toEqual([
+            {
+                id: 1,
+                name: 'John Doe',
+                age: 25,
+                parentIds: [1, 2],
+                address: { city: 'Houston', zip: '10001' }
+            }
+        ]);
+    });
+
+    it('should filter array - array value', () => {
         expect(
             filterByKeyValue({
                 array: people,
