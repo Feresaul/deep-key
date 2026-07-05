@@ -2,7 +2,7 @@ import { getKeyValue } from './value';
 
 import type { DeepKeyOf, TObject } from '../types';
 
-type SortParams<T extends TObject> = {
+type SortParams<T extends TObject = TObject> = {
     array: T[];
     key: DeepKeyOf<T>;
     order?: 'ASC' | 'DESC';
@@ -13,7 +13,7 @@ type SortParams<T extends TObject> = {
  * @param params - The parameters for sorting, including the array of objects, the key to sort by, and the order (ascending or descending).
  * @returns The sorted array.
  */
-export const sortByKeyValue = <T extends TObject>({
+export const sortByKeyValue = <T extends TObject = TObject>({
     array,
     key,
     order = 'ASC'
