@@ -1,13 +1,23 @@
-A utility library designed to simplify working with deeply nested objects in TypeScript.
-This is intended to be used when you work with dynamic keys or when you are not sure if the property exists.
-It provides a set of functions so you don't have to deal with the complexity of checking for the existence of properties at each level of the object.
+# deep-key
+
+`deep-key` is a utility for working with deeply nested objects in TypeScript.
+It helps you read, filter, sort, and update properties without writing manual guards at every level.
 
 ## Features
 
-- Safely access deeply nested properties.
-- Filter arrays based on nested properties.
-- Sort arrays based on nested properties.
-- Lightweight and easy to integrate.
+- Safe access to nested properties.
+- Reading and mapping arrays with dynamic paths.
+- Filtering arrays by nested properties.
+- Sorting arrays by nested properties.
+- Immutable updates for nested values.
+
+## Documentation
+
+- [General guide](docs/README.md)
+- [Value utilities](docs/value.md)
+- [Filter utilities](docs/filter.md)
+- [Sort utilities](docs/sort.md)
+- [Exported types](docs/types.md)
 
 ## Installation
 
@@ -17,157 +27,56 @@ npm install @nuc-lib/deep-key
 
 ## Usage
 
-### Accessing Nested Properties
+```typescript
+import {
+    filterByKeyValue,
+    getKeyValue,
+    sortByKeyValue,
+    updateKeyValue
+} from '@nuc-lib/deep-key';
+```
 
-The `getKeyValue` utility lets you access nested properties using a dot notation string.
-If the property does not exist, it returns `undefined` instead of throwing an error.
+If you want to see every scenario covered by each utility, check the separate documentation files in `docs/`.
 
-The key is a string that represents the path to the property you want to access.
-The path is defined using dot notation, where each level of the object is separated by a dot.
+### Reading and updating values
+
+See [docs/value.md](docs/value.md) for `getKeyValue` and `updateKeyValue` examples.
+
+### Filtering and sorting
+
+See [docs/filter.md](docs/filter.md) for `filterByKeyValue` and [docs/sort.md](docs/sort.md) for `sortByKeyValue`.
+
+## Quick examples
 
 ```javascript
-import { getKeyValue } from '@nuc-lib/deep-key';
-
 const guy = {
-    id: 2,
-    personalInfo: {
-        name: 'John Doe',
-        age: 12,
-        city: 'New York'
-    },
-    contacts: [
-        { name: 'Jane Doe', email: 'afk@example.com' },
-        { name: 'Alice Smith', email: 'alice@example.com' },
-        { name: 'Bob Johnson', email: 'bob@example.com' },
-        { name: 'Charlie Brown', email: 'charlie@example.com' }
-    ],
-    associatedIds: [23, 43, 67, 89]
+    personalInfo: { name: 'John Doe' },
+    contacts: [{ name: 'Jane Doe' }, { name: 'Alice Smith' }]
 };
 
-getKeyValue({ object: guy, key: 'personalInfo.name' }); // 'John Doe'
-getKeyValue({ object: guy, key: 'personalInfo.age' }); // 12
-getKeyValue({ object: guy, key: 'personalInfo.city' }); // 'New York'
-```
+getKeyValue({ object: guy, key: 'personalInfo.name' });
+// 'John Doe'
 
-For arrays there are two ways to access the values:
-
-- **Getting an element in a specific index.**
-
-```javascript
-getKeyValue({ object: guy, key: 'contacts.0' }); // { name: 'Jane Doe', email: 'afk@example.com' }
-getKeyValue({ object: guy, key: 'contacts.0.name' }); // 'Jane Doe'
-getKeyValue({ object: guy, key: 'contacts.0.email' }); // 'afk@example.com'
-```
-
-- **Getting all the values in the array.**
-  A key wrapped in `[]` represents an actual mapping over the array, this means it will return an array of values from the parent array.
-
-```javascript
 getKeyValue({ object: guy, key: '[contacts].name' });
-// ['Jane Doe', 'Alice Smith', 'Bob Johnson', 'Charlie Brown']
-```
+// ['Jane Doe', 'Alice Smith']
 
-### Filtering By Nested Properties
-
-The `filterByKeyValue` utility allows you to filter an array of objects based on a nested property.
-It returns a new array containing only the objects that satisfy the filter condition.
-
-```javascript
-import { filterByKeyValue } from '@nuc-lib/deep-key';
-
-const people = [
-    {
-        id: 1,
-        name: 'John Doe',
-        age: 25,
-        parentIds: [1, 2],
-        address: { city: 'Houston', zip: '10001' }
-    },
-    {
-        id: 2,
-        name: 'Jane Doe',
-        age: 30,
-        parentIds: [3, 4],
-        address: { city: 'Los Angeles', zip: '90001' }
-    },
-    {
-        id: 3,
-        name: 'Alice Smith',
-        age: 22,
-        parentIds: [5, 6],
-        address: { city: 'Chicago', zip: '60601' }
-    },
-    {
-        id: 4,
-        name: 'Bob Johnson',
-        age: 28,
-        parentIds: [7, 8],
-        address: { city: 'Houston', zip: '77001' }
-    }
-];
+updateKeyValue({
+    object: guy,
+    key: 'personalInfo.name',
+    value: 'Jane Smith'
+});
+// { personalInfo: { name: 'Jane Smith' }, contacts: [{ name: 'Jane Doe' }, { name: 'Alice Smith' }] }
 
 filterByKeyValue({
-    array: people,
+    array: [{ age: 25 }, { age: 30 }],
     key: 'age',
-    filter: (value) => (value ? value === 25 : false)
+    filter: (value) => value === 30
 });
-// [ { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } } ]
-filterByKeyValue({
-    array: people,
-    key: 'address.city',
-    filter: (value) => value === 'Houston'
+// [{ age: 30 }]
+
+sortByKeyValue({
+    array: [{ name: 'Bob' }, { name: 'Alice' }],
+    key: 'name'
 });
-// [
-//   { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
-//   { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } }
-// ]
-filterByKeyValue({
-    array: people,
-    key: 'age',
-    filter: (value) => (value ? value > 25 : false)
-});
-// [
-//   { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } },
-//   { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } }
-// ]
-filterByKeyValue({
-    array: people,
-    key: 'age',
-    filter: (value) => [22, 25].includes(value)
-});
-// [
-//   { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
-//   { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
-// ]
-```
-
-### Sorting By Nested Properties
-
-The `sortByKeyValue` utility allows you to sort an array of objects based on a nested property.
-It returns a new array sorted in ascending order by default.
-
-```javascript
-import { sortByKeyValue } from '@nuc-lib/deep-key';
-
-sortByKeyValue({ array: people, key: 'name' });
-// [
-//     { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
-//     { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } },
-//     { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } },
-//     { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } }
-// ]
-sortByKeyValue({ array: people, key: 'address.city' });
-// [
-//     { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
-//     { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
-//     { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } },
-//     { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } }
-// ]
-sortByKeyValue({ array: people, key: 'address.zip' });
-// [
-//     { id: 1, name: 'John Doe', age: 25, parentIds: [ 1, 2 ], address: { city: 'Houston', zip: '10001' } },
-//     { id: 3, name: 'Alice Smith', age: 22, parentIds: [5, 6], address: { city: 'Chicago', zip: '60601' } },
-//     { id: 4, name: 'Bob Johnson', age: 28, parentIds: [7, 8], address: { city: 'Houston', zip: '77001' } },
-//     { id: 2, name: 'Jane Doe', age: 30, parentIds: [3, 4], address: { city: 'Los Angeles', zip: '90001' } }
-// ]
+// [{ name: 'Alice' }, { name: 'Bob' }]
 ```
