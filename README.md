@@ -13,7 +13,6 @@ It helps you read, filter, sort, and update properties without writing manual gu
 
 ## Documentation
 
-- [General guide](docs/README.md)
 - [Value utilities](docs/value.md)
 - [Filter utilities](docs/filter.md)
 - [Sort utilities](docs/sort.md)
